@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "id": "gate-001",
+  "title": "城门倒计时 · 第一集",
+  "aspect_ratio": "9:16",
+  "visual_style": "国风二维漫画，清晰墨线，低饱和青灰色，暖色灯火，高对比光影",
+  "negative_prompt": "文字，字幕，水印，多余手指，扭曲面部，现代标志",
+  "characters": [
+    {
+      "id": "linhe",
+      "name": "林禾",
+      "appearance": "年轻成年男子，瘦长脸，黑色束发，灰蓝粗布短袍，棕色腰带，左袖有方形补丁",
+      "voice": "青年男声，语速中等，紧张但清晰，不模仿真实人物"
+    },
+    {
+      "id": "shenlan",
+      "name": "沈岚",
+      "appearance": "年轻成年女子，圆脸，黑色高马尾，深棕轻甲，墨绿色披风，腰间佩短刀",
+      "voice": "青年女声，低沉有力，句尾干脆，不模仿真实人物"
+    }
+  ],
+  "scenes": [
+    {
+      "id": "city-gate",
+      "location": "架空古代石城北门，暴雨夜，城门即将关闭",
+      "shots": [
+        {
+          "id": "s001",
+          "duration_seconds": 5,
+          "framing": "远景，俯视城门，纵向构图",
+          "visual": "沉重木门缓缓合拢，远处一道孤独身影奔向城门，门缝里透出暖光",
+          "characters": ["linhe"],
+          "lines": [{"speaker": "narrator", "text": "城门关闭前，他只剩最后一次机会。"}],
+          "sound": "密集雨声，沉重木门摩擦声"
+        },
+        {
+          "id": "s002",
+          "duration_seconds": 5,
+          "framing": "中近景，低机位跟随",
+          "visual": "林禾踩进积水，护住怀中的布包，抬头看向门楼，左袖补丁清晰可见",
+          "characters": ["linhe"],
+          "lines": [{"speaker": "linhe", "text": "等一下！城里的水，明早不能喝！"}],
+          "sound": "急促脚步，喘息"
+        },
+        {
+          "id": "s003",
+          "duration_seconds": 5,
+          "framing": "中景，门内逆光",
+          "visual": "沈岚站在门缝前抬手示意，披风被风吹起，神情警惕",
+          "characters": ["shenlan"],
+          "lines": [{"speaker": "shenlan", "text": "你凭什么，让全城相信一个陌生人？"}],
+          "sound": "风声，木门短暂停住"
+        },
+        {
+          "id": "s004",
+          "duration_seconds": 5,
+          "framing": "双人中近景，布包位于画面中心",
+          "visual": "林禾在沈岚面前打开布包，里面是一只结满蓝色晶体的木碗，二人神色凝重",
+          "characters": ["linhe", "shenlan"],
+          "lines": [
+            {"speaker": "linhe", "text": "这是井底捞上来的。"},
+            {"speaker": "shenlan", "text": "这口井，昨天才封。"}
+          ],
+          "sound": "雨声压低，轻微悬念音"
+        },
+        {
+          "id": "s005",
+          "duration_seconds": 4,
+          "framing": "物件特写，浅景深",
+          "visual": "木碗边缘的蓝色晶体在灯光下闪烁，背景是模糊的城门，不出现人物面部",
+          "characters": [],
+          "lines": [],
+          "sound": "单声低鼓点，留出短暂停顿"
+        },
+        {
+          "id": "s006",
+          "duration_seconds": 6,
+          "framing": "面部近景，越肩视角",
+          "visual": "沈岚越过林禾的肩头看向城外，林禾神色惊惧，雨幕深处出现一盏红灯笼",
+          "characters": ["linhe", "shenlan"],
+          "lines": [{"speaker": "narrator", "text": "她刚要开门，城外却响起了同样的求救声。"}],
+          "sound": "远处模糊人声，悬念收尾"
+        }
+      ]
+    }
+  ]
+}

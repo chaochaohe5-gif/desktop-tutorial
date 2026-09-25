@@ -1,5 +1,96 @@
-# Welcome to GitHub Desktop!
+# AI 漫剧工作台
 
-This is your README. READMEs are where you can communicate what your project is and how to use it.
+面向个人创作者的漫剧制作 MVP：把剧本、角色、分镜、素材和发布检查串成可重复的流程。
 
-Write your name on line 6, save it, and then head back to GitHub Desktop.
+**当前可运行：结构化剧本 → 分镜生产包。** 不需要显卡、API Key 或付费服务；运行时只使用 Python 标准库。以国风剧情短视频为起步场景，示例为原创架空故事《城门倒计时》。
+
+**当前边界：** 输入是已写好台词和镜头的 JSON 剧本，程序负责校验、统一角色描述、计算时间线和导出制作资料。尚不支持从一句话自动编剧，也不会生成图片、音频、视频或自动发布。它是后续接入生成服务的第一块可运行模块。
+
+## 先跑起来
+
+需要 [Python 3.11 或以上](https://www.python.org/downloads/)。下载/克隆仓库后，在项目根目录执行：
+
+```bash
+python -m manju validate examples/episode.json
+python -m manju build examples/episode.json --out output/demo
+```
+
+macOS/Linux 如没有 `python` 命令，改用 `python3`；Windows 可使用 `py -3`。无需先运行 `pip install`。Windows 也可以双击 `scripts/run_demo.bat`；macOS/Linux 可执行 `bash scripts/run_demo.sh`。
+
+示例包含 **2 个角色、6 个镜头、计划时长 30 秒**。成功后打开 `output/demo/storyboard.md` 看分镜，或用 Excel/WPS 打开两个 CSV 文件。双击脚本每次使用新目录；手动运行时若 `output/demo` 已存在，请改用 `output/demo-v2`，程序不会覆盖旧目录。
+
+| 输出文件 | 用途 |
+| --- | --- |
+| `production.json` | 统一生产计划：角色、镜头时间线、素材预期路径与待办状态 |
+| `storyboard.md` | 人工审阅的分镜表 |
+| `storyboard.csv` | 用 Excel/WPS 查看和追踪的分镜表 |
+| `characters.md` | 固定外观、声音设定及参考图待办 |
+| `image_prompts.json` | 每镜头图片提示词和负面提示词，含角色固定外观 |
+| `voice_lines.csv` | 分角色配音台本、声音要求和预期音频文件名 |
+| `subtitles.srt` | 按台词长度估时的字幕草稿，需按真实配音重新对齐 |
+| `release_checklist.md` | 成片质量、素材授权、发布及复盘检查 |
+
+`production.json` 中的图片、音频路径是**待生成文件的约定路径**，不是已经存在的素材。`storyboard.csv` 是导出表，修改它不会回写剧本；目前以源 JSON 为准。
+
+## 做自己的第一集
+
+1. 新建 `workspaces/`，把 `examples/episode.json` 复制进去并改名为 `episode-001.json`。
+2. 修改标题、角色外观和声音，再修改场景、镜头、台词、时长。字段规则见[剧本格式](docs/episode-format.md)。
+3. 运行 `python -m manju build workspaces/episode-001.json --out output/episode-001-v1`。
+4. 审核分镜和角色卡；先手工制作角色参考图，再把提示词交给图片工具，逐镜检查一致性。
+5. 按 `voice_lines.csv` 制作配音，连同图片放入剪映等工具；重新对齐字幕、补音效、导出并完整观看。
+6. 在平台官方客户端人工发布，记录工时、费用和作品反馈。
+
+建议先用 30–60 秒短样片验证流程。这是试验范围，不是平台限制，也不承诺每日产量或收益。重复生成、角色一致性修正和人工剪辑，可能比第一次生成更影响成本。
+
+## 全流程与实现状态
+
+| 阶段 | 交付物 / 检查点 | v0.1 状态 |
+| --- | --- | --- |
+| 剧本 | 冲突、台词、结尾悬念；确认素材使用权 | 人工输入 JSON，程序校验 |
+| 分镜 | 场景、构图、时长、人物、声音 | 已实现时间线与分镜导出；不自动拆镜 |
+| 角色设定 | 固定外观、声音、参考图 | 已实现文字角色卡；参考图待制作 |
+| 图片生成 | 参考图、逐镜图片、一致性审核 | 已实现提示词导出；生成服务待接入 |
+| 配音 | 分角色音频、读音和时长检查 | 已实现台本与估时字幕；合成与对齐待接入 |
+| 剪辑 | 图片运动、音效、字幕、完整成片 | 当前人工剪辑；FFmpeg 合成规划中 |
+| 发布 | 封面、简介、标识、作品链接、复盘 | 已实现检查表；人工发布 |
+
+详细操作及验收要求见[制作流程](docs/workflow.md)。
+
+## 项目目录
+
+| 路径 | 职责 |
+| --- | --- |
+| `manju/` | 命令行、剧本校验、生产规划、文件导出 |
+| `examples/episode.json` | 可直接运行的原创示例 |
+| `docs/` | 流程、技术选型、数据约定、任务清单、开发说明 |
+| `scripts/` | Windows / macOS / Linux 示例启动脚本 |
+| `tests/` | 真实导出、时间线、错误输入等自动化测试 |
+| `.github/` | 持续集成和问题模板 |
+| `workspaces/` | 个人剧本及原始素材，自行创建，Git 默认忽略 |
+| `output/` | 生产包和生成结果，运行时创建，Git 默认忽略 |
+
+生产资料按“集 → 镜头 → 台词”组织。先用本地文件维护可追踪的结果，有多人协作需求再引入数据库和任务队列。
+
+## 技术选择
+
+| 位置 | 当前选择 | 原因 / 后续边界 |
+| --- | --- | --- |
+| 核心运行 | Python 3.11+、标准库 | 无运行依赖；本地校验和导出无需 GPU |
+| 输入与中间结果 | 带版本号的 JSON | 易审查、可复现，后续服务共享同一份计划 |
+| 人工交接 | Markdown、UTF-8 BOM CSV、SRT | 方便阅读、表格处理及字幕交接 |
+| 图片与配音 | 当前手工工具交接 | 先验证效果和成本，再接一家有文档的正式 API |
+| 剪辑 | 当前人工使用剪映等工具 | 后续以 FFmpeg 做基础合成；不依赖非公开草稿格式 |
+| 质量保证 | `unittest` + GitHub Actions | 核心逻辑离线测试，不消耗模型额度 |
+
+理由、成本控制、服务接入边界和官方资料见[架构与技术选型](docs/architecture.md)。当前不会安装 CUDA、ComfyUI、本地大模型或第三方生成 SDK。
+
+## 下一步开发
+
+优先级与验收标准见[任务清单](docs/roadmap.md)。第一优先级是**用当前生产包完成一条可观看样片并记录成本**；其次是素材导入与审核状态、单一图片服务、配音和字幕对齐、基础合成，最后再考虑浏览器界面。
+
+```bash
+python -m unittest discover -s tests -v
+```
+
+开发约定见[参与开发](docs/contributing.md)。本仓库公开，个人剧本、付费素材、生成结果和凭据应放在默认忽略的目录；不要上传账号 Cookie 或 API Key。Git 忽略规则不能撤回已公开的内容。

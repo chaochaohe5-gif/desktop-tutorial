@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "manju-workbench"
+version = "0.1.0"
+description = "面向个人创作者的 AI 漫剧生产工作台：从结构化剧本生成分镜生产包"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+manju = "manju.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["manju*"]
